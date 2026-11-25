@@ -725,6 +725,31 @@ html body .shwbar .shwctl button[data-sv="-1"],html body .shwbar .shwctl button[
 .sldfit .sld .sldb ul,html body .shwslide .sld .sldb ul{padding-left:1.3em!important;margin-left:0!important}
 .sld .sldb li::marker{color:var(--forest)}
 .sld .sldc b:not(.fno){color:var(--forest)!important;font-weight:700}html.dark .sld .sldc b:not(.fno){color:var(--kelly)!important}
+/* ---------- live slides (full screen) ---------- */
+#shw.live .shwslide .sld{isolation:isolate}
+#shw.live .sld .lvbg{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;fill:none;stroke:var(--forest,#00664a);stroke-width:1.2;opacity:.07}
+#shw.live .sld .lvbg .lvg1{animation:lvdrift 46s ease-in-out infinite alternate;transform-origin:1100px 300px}
+#shw.live .sld .lvbg .lvg2{animation:lvdrift2 58s ease-in-out infinite alternate;transform-origin:100px 600px}
+@keyframes lvdrift{from{transform:translate(0,0) rotate(0)}to{transform:translate(-40px,26px) rotate(9deg)}}
+@keyframes lvdrift2{from{transform:translate(0,0) rotate(0)}to{transform:translate(34px,-30px) rotate(-7deg)}}
+#shw.live .sld .sldb li{margin-left:-8px;padding-left:8px;transition:opacity .55s ease,color .55s ease,filter .55s ease}
+#shw.live .sld .sldb li.lvf{opacity:.5;filter:saturate(.45)}
+#shw.live .sld .sldb li.lvc{background:linear-gradient(90deg,rgba(47,158,110,.16),rgba(47,158,110,.05)) no-repeat 0 0/0% 100%;border-radius:6px;animation:lvsweep .9s cubic-bezier(.2,.7,.2,1) forwards;box-shadow:inset 3px 0 0 rgba(0,102,74,.55)}
+#shw.live .sld .sldb li.lvc b{animation:lvpop .8s ease .15s}
+@keyframes lvsweep{to{background-size:100% 100%}}
+@keyframes lvpop{40%{text-shadow:0 0 14px rgba(47,158,110,.45)}}
+#shw.live .sld .sldf{position:relative}
+#shw.live .sld .sldf img{transition:transform 1.6s cubic-bezier(.25,.6,.25,1),opacity .9s ease}
+#shw.live .sld .sldf img.lvhide{opacity:0}
+#shw.live .sld.lvin .sldh,#shw.live .sld.lvin .sldivin{animation:lvup .7s cubic-bezier(.2,.7,.2,1) both}
+#shw.live .sld.lvin .sldf{animation:lvfade .9s ease .1s both}
+@keyframes lvup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes lvfade{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+.lv3{position:absolute;opacity:0;transition:opacity 1s ease;pointer-events:none;z-index:2}
+.lv3.in{opacity:1}
+.lv3 canvas{display:block}
+.lv3 .lv3l{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);font-size:15px;color:var(--forest,#00664a);background:rgba(230,242,237,.85);padding:3px 12px;border-radius:20px;white-space:nowrap;letter-spacing:.01em}
+@media (prefers-reduced-motion:reduce){#shw.live .sld .lvbg g{animation:none}}
 .sldc{font-size:15px}.shwslide .sldivt{font-size:54px}
 .shwctl{position:absolute;right:18px;bottom:14px;display:flex;gap:8px;align-items:center;opacity:.25;transition:opacity .2s;font-family:var(--cond);color:#fff}
 .shwctl:hover{opacity:1}.shwctl button{background:var(--forest);color:#fff;border:1px solid #fff;border-radius:4px;padding:6px 12px;font-family:var(--cond);font-size:15px;cursor:pointer}.shwctl button[disabled]{opacity:.35}
@@ -1152,7 +1177,8 @@ var SHI=(function(){function v(p,ex){return '<svg viewBox="0 0 24 24" fill="none
   r169:'<svg class="wide" viewBox="0 0 34 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="1" y="3" width="32" height="18" rx="1.5"/><text x="17" y="15.4" font-size="9.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="Arial" font-weight="700">16:9</text></svg>',
   r43:'<svg class="wide" viewBox="0 0 34 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="3" width="24" height="18" rx="1.5"/><text x="17" y="15.4" font-size="9.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="Arial" font-weight="700">4:3</text></svg>',
   grid:v('<rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/>'),
-  x:v('<path d="M6 6l12 12M18 6L6 18"/>')}})();
+  x:v('<path d="M6 6l12 12M18 6L6 18"/>'),
+  live:v('<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>')}})();
 function shwBar(on){SHT.bar=on;var b=document.querySelector("#shw .shwbar");if(b)b.classList.toggle("show",on)}
 function shwExtra(){var shw=document.getElementById("shw");if(!shw||!SHOW)return;var st=shw.querySelector(".shwslide"),ctl=shw.querySelector(".shwctl");
  shw.classList.remove("tl-laser","tl-pen","tl-hl");shw.classList.add("tl-"+SHT.tool);
@@ -1163,7 +1189,7 @@ function shwExtra(){var shw=document.getElementById("shw");if(!shw||!SHOW)return
   function ic(sel,svg,tt){var b=ctl.querySelector(sel);if(b){b.innerHTML=svg;b.title=tt;b.setAttribute("aria-label",tt)}}
   ic('[data-sv="-1"]',SHI.prev,"Previous slide");ic('[data-sv="1"]',SHI.next,"Next slide");ic('[data-sv="n"]',SHI.sec,"Next section");ic('[data-sv="g"]',SHI.grid,"All slides");ic('[data-sv="x"]',SHI.x,"Exit full screen");
   var g=ctl.querySelector('[data-sv="g"]'),d=document.createElement("span");d.style.display="contents";
-  d.innerHTML='<span class="shwsep"></span>'+[["laser","Laser pointer"],["pen","Pen"],["hl","Highlighter"]].map(function(x){return '<button type="button" data-tl="'+x[0]+'" title="'+x[1]+'" aria-label="'+x[1]+'"'+(SHT.tool===x[0]?' class="on"':'')+'>'+SHI[x[0]]+'</button>'}).join("")+'<button type="button" data-tl="clear" title="Clear ink" aria-label="Clear ink">'+SHI.clear+'</button><span class="shwsep"></span><button type="button" data-ar="169" title="Wide slides (16:9)" aria-label="Wide slides 16:9"'+(SHT.ar==="169"?' class="on"':'')+'>'+SHI.r169+'</button><button type="button" data-ar="43" title="Standard slides (4:3)" aria-label="Standard slides 4:3"'+(SHT.ar==="43"?' class="on"':'')+'>'+SHI.r43+'</button><span class="shwsep"></span>';
+  d.innerHTML='<span class="shwsep"></span>'+[["laser","Laser pointer"],["pen","Pen"],["hl","Highlighter"]].map(function(x){return '<button type="button" data-tl="'+x[0]+'" title="'+x[1]+'" aria-label="'+x[1]+'"'+(SHT.tool===x[0]?' class="on"':'')+'>'+SHI[x[0]]+'</button>'}).join("")+'<button type="button" data-tl="clear" title="Clear ink" aria-label="Clear ink">'+SHI.clear+'</button><span class="shwsep"></span><button type="button" data-ar="169" title="Wide slides (16:9)" aria-label="Wide slides 16:9"'+(SHT.ar==="169"?' class="on"':'')+'>'+SHI.r169+'</button><button type="button" data-ar="43" title="Standard slides (4:3)" aria-label="Standard slides 4:3"'+(SHT.ar==="43"?' class="on"':'')+'>'+SHI.r43+'</button><span class="shwsep"></span><button type="button" data-lv="1" title="Live slides: step through the points with gentle motion and 3D models" aria-label="Live slides on or off"'+(LV.on?' class="on"':'')+'>'+SHI.live+'</button><span class="shwsep"></span>';
   ctl.insertBefore(d,g||null)}
  /* previous / next arrows: always there, faint, at the bottom middle (clicking the slide itself never changes slides) */
  var nv=document.createElement("div");nv.className="shwnav";var k0=SHOW.k,n0=SHOW.list.length;
@@ -1172,7 +1198,7 @@ function shwExtra(){var shw=document.getElementById("shw");if(!shw||!SHOW)return
  nv.innerHTML=(tS?'<button type="button" class="shwsec" data-svp="1" title="'+(pS?'Previous section: '+esc(pS.title):'Previous section')+'" aria-label="Previous section"'+(pS?'':' disabled')+'>'+SHI.psec+'</button>':'')+'<button type="button" data-sv="-1" title="Previous slide" aria-label="Previous slide"'+(k0===0?' disabled':'')+'>'+SHI.prev+'</button><button type="button" data-sv="1" title="Next slide" aria-label="Next slide"'+(k0===n0-1?' disabled':'')+'>'+SHI.next+'</button>'+(tS?'<button type="button" class="shwsec" data-sv="n" title="'+(nS?'Next section: '+esc(nS.title):'Next section')+'" aria-label="Next section"'+(nS?'':' disabled')+'>'+SHI.sec+'</button>':'');shw.appendChild(nv);
  var pb=nv.querySelector("[data-svp]");if(pb&&pS)pb.addEventListener("click",function(e){e.stopPropagation();S.tid=pS.id;S.sl=0;S.tab="slides";SHOW.list=secDeck(pS);SHOW.k=0;SHOW.moved=1;SHOW.grid=false;showDraw()});
  var lz=document.createElement("div");lz.id="shwlaser";shw.appendChild(lz);
- showFit();shwPaint();seenSlides()}
+ showFit();shwPaint();seenSlides();if(typeof lvSetup==="function")try{lvSetup()}catch(x){}}
 (function(){
  function pt(cv,e){var r=cv.getBoundingClientRect(),W=shwW();return [(e.clientX-r.left)/r.width*W,(e.clientY-r.top)/r.height*720]}
  var LX=0,LY=0,LIN=false,raf=0;
@@ -1283,6 +1309,62 @@ function stuPrg(s){var d=stuD(s),tot=0,n=0,by={};ALLCH.forEach(function(c){var c
 function stuPrgHTML(d){var D=stuD(d),P=stuPrg(d),h='<h3 style="margin-top:22px">Progress by section</h3><p class="dim">'+prgBar(P.all)+' overall. Slides gone through, video opened and watched, homework and quiz turned in, sections marked Mastered.</p>';
  ALLCH.forEach(function(c){h+='<details class="card stuprg"><summary><b>Chapter '+c.num+'</b> '+esc(c.title)+' '+prgBar(P.by[c.id])+'</summary>'+c.topics.map(function(t,i){return '<div class="stuprgs"><div><b>'+c.num+'.'+(i+1)+'</b> '+esc(t.title)+' '+prgBar(prgPct(t,D))+'</div>'+prgList(t,D,false)+'</div>'}).join("")+'</details>'});return h}
 if(typeof drawStu==="function"){var _drawStu0=drawStu;drawStu=function(em,name,d){_drawStu0(em,name,d);var b=document.getElementById("studet");if(b&&!b.querySelector(".stuprg"))b.insertAdjacentHTML("beforeend",stuPrgHTML(d))}}
+/* ---------- Live slides (Nov 25 2026): in full screen, Next first steps through the bullets of a slide (the current one
+   highlighted, the ones still to come slightly grayed), the picture drifts gently, and in every section one slide turns its
+   picture into a slowly turning 3D model (Three.js and the model loaded only when needed). A button turns it off. ---------- */
+var LIVE={"ch01-p1":{"s":"Matter and energy are different things","at":0,"l":"Solid, liquid and gas particles","k":"states","f":"ch01"},"ch01-p3":{"s":"Changes of state are physical changes","at":4,"l":"Carbon dioxide, CO2 (dry ice)","k":"mol","f":"ch01"},"ch01-p4":{"s":"Pure substances: elements and compounds","at":3,"l":"Water, H2O","k":"mol","f":"ch01"},"ch01-p5":{"s":"Densities of common materials","at":2,"l":"Ethanol, CH3CH2OH","k":"mol","f":"ch01"},"ch01-p6":{"s":"Significant figures: certain digits plus one","at":3,"l":"Caffeine, C8H10N4O2","k":"mol","f":"ch01"},"ch01-p7":{"s":"Equalities that link the two systems","at":2,"l":"Ibuprofen, dosed in mg per kg","k":"mol","f":"ch01"},"ch02-p1":{"s":"Atomic number Z and mass number A","at":4,"l":"Carbon atom, Z = 6 (2, 4)","k":"atom","f":"ch02"},"ch02-p2":{"s":"Ions: cations and anions","at":2,"l":"Sodium ion, Na+ (2, 8)","k":"atom","f":"ch02"},"ch02-p4":{"s":"Trends explain table salt","at":0,"l":"Sodium atom (2, 8, 1)","k":"atom","f":"ch02"},"ch02-p6":{"s":"Bohr diagram examples","at":3,"l":"Calcium atom (2, 8, 8, 2)","k":"atom","f":"ch02"},"ch02-p7":{"s":"Orbital shapes","at":1,"l":"A 2p orbital: two lobes","k":"orbital","f":"ch02"},"ch03-p1":{"s":"Ions stack into a crystal","at":0,"l":"Sodium chloride crystal lattice","k":"crystal","f":"ch03"},"ch03-p5":{"s":"Polar and nonpolar molecules","at":3,"l":"Water, a polar bent molecule","k":"mol","f":"ch03"},"ch03-p6":{"s":"A formula counts atoms","at":3,"l":"Hydrogen peroxide, H2O2","k":"mol","f":"ch03"},"ch03-p7":{"s":"Shape decides polarity","at":0,"l":"Ammonia, NH3 (pyramidal)","k":"mol","f":"ch03"},"ch03-p8":{"s":"Water and oil do not mix","at":3,"l":"Sodium stearate, a soap","k":"mol","f":"ch03"},"ch04-p1":{"s":"Coefficients are mole ratios","at":0,"l":"Hydrogen, H2","k":"mol","f":"ch04"},"ch04-p5":{"s":"Combustion","at":2,"l":"Methane, CH4","k":"mol","f":"ch04"},"ch04-p9":{"s":"Precipitates in daily life","at":1,"l":"Oxalate ion, C2O4 2-","k":"mol","f":"ch04"},"ch04-p12":{"s":"The mole and Avogadro's number","at":3,"l":"Oxygen, O2","k":"mol","f":"ch04"},"ch04-p15":{"s":"Moles and particles","at":2,"l":"Iron atom, Fe","k":"atom","f":"ch04"},"ch04-p16":{"s":"Coefficients are mole ratios","at":1,"l":"Propane, C3H8","k":"mol","f":"ch04"},"ch04-p18":{"s":"Mass is conserved","at":3,"l":"Octane, C8H18","k":"mol","f":"ch04"},"ch04-p20":{"s":"Worked example","at":2,"l":"Water, H2O","k":"mol","f":"ch04"},"ch5-p1":{"s":"Particle spacing explains the differences","at":0,"l":"Solid, liquid and gas","k":"states","f":"ch5"},"ch5-p2":{"s":"Boyle's law","at":2,"l":"Gas particles in a box","k":"gas","f":"ch5"},"ch5-p3":{"s":"Viscosity and surface tension","at":3,"l":"Stearate, a soap anion","k":"mol","f":"ch5"},"ch5-p4":{"s":"Hydrogen bonding","at":4,"l":"DNA, held by hydrogen bonds","k":"dna","f":"ch5"},"ch5-p5":{"s":"Four types of crystalline solids","at":0,"l":"Sodium chloride, NaCl","k":"crystal","f":"ch5"},"ch6-p1":{"s":"Electrolytes and nonelectrolytes","at":1,"l":"beta-D-Glucose, nonelectrolyte","k":"mol","f":"ch6"},"ch6-p2":{"s":"Parts per thousand and parts per million","at":3,"l":"Lead atom, Pb","k":"atom","f":"ch6"},"ch6-p3":{"s":"Molarity defined","at":1,"l":"Sodium chloride, NaCl","k":"crystal","f":"ch6"},"ch6-p4":{"s":"Osmosis and osmotic pressure","at":1,"l":"Semipermeable membrane with channel","k":"membrane","f":"ch6"},"ch6-p5":{"s":"Anions and proteins in the blood","at":0,"l":"Hemoglobin (PDB 1A3N)","k":"protein","f":"ch6"},"ch07-p1":{"s":"How a reaction rate is measured","at":2,"l":"Hydrogen gas, H2","k":"mol","f":"ch07"},"ch07-p2":{"s":"Exothermic and endothermic reactions","at":2,"l":"Ammonium nitrate, NH4NO3","k":"mol","f":"ch07"},"ch07-p3":{"s":"Temperature and pressure shift equilibrium","at":2,"l":"Gas particles under pressure","k":"gas","f":"ch07"},"ch07-p4":{"s":"Balance the equation before you write K","at":2,"l":"Ammonia, NH3","k":"mol","f":"ch07"},"ch07-p5":{"s":"Steps for finding the value of K","at":2,"l":"Hydrogen iodide, HI","k":"mol","f":"ch07"},"ch08-p1":{"s":"Arrhenius theory: acids and bases","at":0,"l":"Hydrogen chloride, HCl","k":"mol","f":"ch08"},"ch08-p2":{"s":"Weak acids","at":1,"l":"Acetic acid, CH3COOH","k":"mol","f":"ch08"},"ch08-p3":{"s":"Reversible and one-way arrows","at":2,"l":"Hydrogen fluoride, HF","k":"mol","f":"ch08"},"ch08-p4":{"s":"The ion product of water","at":0,"l":"Water, H2O","k":"mol","f":"ch08"},"ch08-p5":{"s":"pH, pOH and the rule of 14","at":1,"l":"Hydronium ion, H3O+","k":"mol","f":"ch08"},"ch08-p6":{"s":"Neutralization gives salt and water","at":2,"l":"Sodium chloride lattice, NaCl","k":"crystal","f":"ch08"},"ch08-p7":{"s":"What a buffer is made of","at":3,"l":"Acetic acid, CH3COOH","k":"mol","f":"ch08"},"ch09-p1":{"s":"Protons, neutrons and the atomic number","at":2,"l":"Boron, Z = 5","k":"atom","f":"ch09"},"ch09-p2":{"s":"What an isotope is","at":1,"l":"Carbon, Z = 6","k":"atom","f":"ch09"},"ch09-p3":{"s":"Gamma rays","at":0,"l":"Gamma ray, electromagnetic wave","k":"wave","f":"ch09"},"ch09-p4":{"s":"Gamma emission from technetium-99m","at":0,"l":"Technetium, Z = 43","k":"atom","f":"ch09"},"ch09-p5":{"s":"Half-lives of selected radioisotopes","at":1,"l":"Iodine, Z = 53","k":"atom","f":"ch09"},"ch09-p6":{"s":"The Geiger counter","at":1,"l":"Argon, the Geiger tube gas","k":"atom","f":"ch09"},"ch09-p7":{"s":"Radiation in food and in your own body","at":0,"l":"Potassium, Z = 19","k":"atom","f":"ch09"},"ch09-p8":{"s":"Nuclear fission and the chain reaction","at":0,"l":"Uranium, Z = 92","k":"atom","f":"ch09"}};
+var LV={on:(function(){try{return localStorage.getItem("uamsl:live")!=="0"}catch(e){return true}})(),ren:null,cur:null,lib:null,data:{},
+ B:(location.protocol==="file:"?"https://cdnjs.cloudflare.com/__lv/":""),rm:!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)};
+function lvFmt(l){return esc(l).split(/(\s+|,)/).map(function(w){var m=/^\(?([A-Z][A-Za-z0-9()]*?)([+\u2212-]|\d[+-])?(\)?)$/.exec(w);if(!m||!/^([A-Z][a-z]?\d*|\(|\)\d*)+$/.test(m[1])||!(/\d/.test(m[1])||m[2]))return w;return (w[0]==="("?"(":"")+m[1].replace(/(\d+)/g,"<sub>$1</sub>")+(m[2]?"<sup>"+m[2].replace("-","\u2212")+"</sup>":"")+m[3]}).join("")}
+function lvTxt(s){var d=document.createElement("div");d.innerHTML=s||"";return (d.textContent||"").replace(/\s+/g," ").trim()}
+function lvEntry(){if(!SHOW||SHOW.kind!=="t"||!LIVE)return null;var e=LIVE[S.tid];if(!e)return null;var x=SHOW.list[SHOW.k];return x&&lvTxt(x.title)===lvTxt(e.s)?e:null}
+function lvScript(u){return new Promise(function(ok,no){var s=document.createElement("script");s.src=u;s.async=true;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+function lvLib(){if(!LV.lib)LV.lib=(window.THREE?Promise.resolve():lvScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js")).then(function(){return window.LV3D?0:lvScript(LV.B+"lv3d.js?v=1")});LV.lib.catch(function(){LV.lib=null});return LV.lib}
+function lvModel(e){var f=e.f;if(!LV.data[f])LV.data[f]=fetch(LV.B+"live/"+f+".json?v=1").then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(x){delete LV.data[f];throw x});return LV.data[f].then(function(d){return d[S.tid]})}
+function lvItems(){var st=document.querySelector("#shw .shwslide .sld");return st?[].slice.call(st.querySelectorAll(".sldb > ul > li,.sldb > ol > li")):[]}
+function lvKill(){var c=LV.cur;LV.cur=null;if(c){try{c.b&&c.b.dispose()}catch(x){}if(c.box&&c.box.parentNode)c.box.parentNode.removeChild(c.box)}}
+/* one step: bullets up to st shown, st highlighted; the picture drifts a little more; the 3D model appears at its bullet */
+function lvStep(first){var shw=document.getElementById("shw");if(!shw||!SHOW)return;var li=lvItems(),st=SHOW.st||0;
+ li.forEach(function(x,i){x.classList.toggle("lvf",i>st);x.classList.toggle("lvc",i===st&&!(first&&li.length<2));x.classList.toggle("lvd",i<st)});
+ var im=shw.querySelector(".shwslide .sldf img");if(im&&!LV.rm){var z=1+Math.min(st,6)*.022,o=["50% 50%","35% 40%","65% 45%","45% 65%","60% 35%","40% 55%","55% 50%"][st%7];im.style.transformOrigin=o;im.style.transform="scale("+z.toFixed(3)+")"}
+ var e=lvEntry();if(e){if(st>=e.at)lv3On(e);else if(LV.cur){lv3Off()}}if(e&&LV.cur&&LV.cur.on)LV.cur.goal=Math.max(0,st-e.at);
+ var nv=shw.querySelector(".shwnav"),L=SHOW.list.length;if(nv){var p=nv.querySelector('[data-sv="-1"]'),n=nv.querySelector('[data-sv="1"]');if(p)p.disabled=SHOW.k===0&&st===0;if(n)n.disabled=SHOW.k===L-1&&st>=li.length-1}}
+function lv3Off(){var c=LV.cur;if(!c)return;c.on=false;c.box.classList.remove("in");var im=c.box.parentNode&&c.box.parentNode.querySelector("img");if(im)im.classList.remove("lvhide")}
+function lv3On(e){var shw=document.getElementById("shw"),f=shw&&shw.querySelector(".shwslide .sldf");if(!f)return;
+ if(LV.cur&&LV.cur.box.isConnected){if(!LV.cur.on){LV.cur.on=true;LV.cur.t0=performance.now();if(LV.cur.ready)lvShow()}return}
+ lvKill();var im=f.querySelector("img,svg"),box=document.createElement("div");box.className="lv3";
+ var W=im?im.offsetWidth:f.offsetWidth,H=im?im.offsetHeight:Math.max(260,f.offsetHeight-40);W=Math.max(W,300);H=Math.max(H,240);
+ box.style.width=W+"px";box.style.height=H+"px";if(im){box.style.left=im.offsetLeft-(W-im.offsetWidth)/2+"px";box.style.top=im.offsetTop-(H-im.offsetHeight)/2+"px"}
+ box.innerHTML='<div class="lv3l">'+lvFmt(e.l)+'</div>';f.appendChild(box);
+ var c=LV.cur={box:box,on:true,goal:0,g:0,t0:performance.now(),k:SHOW.k,W:W,H:H};
+ Promise.all([lvLib(),lvModel(e)]).then(function(r){if(LV.cur!==c||!box.isConnected)return;var m=r[1];if(!m)return;lvBuild(c,m)}).catch(function(){})}
+function lvBuild(c,m){var T=window.THREE;if(!LV.ren){try{LV.ren=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:"low-power"});LV.ren.setClearColor(0,0);LV.ren.outputEncoding=T.sRGBEncoding}catch(x){LV.ren=false}}if(!LV.ren)return;
+ var b;try{b=LV3D.build(T,m)}catch(x){return}c.b=b;var sc=new T.Scene();LV3D.lights(T,sc);var piv=new T.Group();piv.add(b.obj);sc.add(piv);
+ var cam=new T.PerspectiveCamera(30,c.W/c.H,.1,5000),d=b.r*({atom:3.2,membrane:3.6,states:3.3,wave:3.4}[m.kind]||4.2)*(c.W<c.H*1.1?1.15:1);cam.position.set(0,d*.28,d);cam.lookAt(0,0,0);
+ var r=c.box.getBoundingClientRect(),pr=Math.min(window.devicePixelRatio||1,1.5),sx=r.width/c.W||1;LV.ren.setPixelRatio(pr*sx);LV.ren.setSize(c.W,c.H,false);
+ var cv=LV.ren.domElement;cv.style.width="100%";cv.style.height="100%";c.box.insertBefore(cv,c.box.firstChild);c.sc=sc;c.cam=cam;c.piv=piv;c.ready=true;c.last=performance.now();c.d=d;if(c.on)lvShow()}
+function lvShow(){var c=LV.cur;if(!c)return;c.box.classList.add("in");var im=c.box.parentNode.querySelector("img");if(im)im.classList.add("lvhide");c.t0=performance.now();if(!c.raf)lvLoop()}
+function lvLoop(){var c=LV.cur;if(!c||!c.box.isConnected||!c.ready){if(c)c.raf=0;return}c.raf=requestAnimationFrame(lvLoop);if(document.hidden)return;
+ var n=performance.now(),dt=Math.min(.05,(n-c.last)/1000),t=(n-c.t0)/1000;c.last=n;c.T=(c.T||0)+dt;
+ c.g+=(c.goal-c.g)*Math.min(1,dt*1.6);var e=Math.min(1,t/1.4),ez=1-Math.pow(1-e,3),sp=LV.rm?0:.22;
+ c.piv.rotation.y=c.T*sp+c.g*.9;c.piv.rotation.x=Math.sin(c.T*.3)*.06;var s=(c.on?.82+.18*ez:1)*(1+Math.min(c.g,3)*.09);c.piv.scale.setScalar(s);
+ if(c.b.tick&&!LV.rm)try{c.b.tick(c.T,dt)}catch(x){}LV.ren.render(c.sc,c.cam)}
+/* background: faint geometric lines drifting slowly behind the slide (pure CSS / SVG, no script per frame) */
+var LVBG='<svg class="lvbg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g class="lvg1"><polygon points="1040,40 1180,120 1180,280 1040,360 900,280 900,120"/><polygon points="1110,330 1200,382 1200,486 1110,538 1020,486 1020,382"/><circle cx="1180" cy="620" r="70"/></g><g class="lvg2"><polygon points="60,520 150,572 150,676 60,728 -30,676 -30,572"/><line x1="0" y1="300" x2="260" y2="720"/><circle cx="240" cy="560" r="26"/></g></svg>';
+function lvSetup(){var shw=document.getElementById("shw");if(!shw||!SHOW)return;
+ if(typeof showMove==="function"&&!showMove._lv){var om=showMove;showMove=function(d){if(LV.on&&SHOW&&!SHOW.grid){var n=lvItems().length,st=SHOW.st||0;
+   if(d>0&&st<n-1){SHOW.st=st+1;lvStep();return}if(d<0&&st>0){SHOW.st=st-1;lvStep();return}}LV.dir=d;om(d)};showMove._lv=1}
+ shw.classList.toggle("live",LV.on);var b=shw.querySelector("[data-lv]");if(b)b.classList.toggle("on",LV.on);
+ var x=SHOW.list[SHOW.k],same=LV.lk===x;LV.lk=x;
+ if(LV.cur&&!(LV.cur.k===SHOW.k&&same&&LV.cur.box.isConnected))lvKill();
+ if(!LV.on){LV.dir=0;return}
+ var sl=shw.querySelector(".shwslide .sld");if(sl&&!sl.querySelector(".lvbg"))sl.insertAdjacentHTML("afterbegin",LVBG);
+ var n=lvItems().length;if(!same)SHOW.st=LV.dir<0?Math.max(0,n-1):0;else SHOW.st=Math.min(SHOW.st||0,Math.max(0,n-1));LV.dir=0;
+ if(sl&&!same)sl.classList.add("lvin");
+ var e=LIVE&&SHOW.kind==="t"&&LIVE[S.tid];if(e&&!LV.rm)setTimeout(function(){lvLib();lvModel(e).catch(function(){})},400);
+ lvStep(true)}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#shw [data-lv]");if(!b||!SHOW)return;e.stopPropagation();b.blur();
+ LV.on=!LV.on;try{localStorage.setItem("uamsl:live",LV.on?"1":"0")}catch(x){}LV.lk=null;lvKill();showDraw()},true);
 
 /* ---------- class server: sync, uploads, teacher dashboard ---------- */
 function isAdmin(){return window.UAMUSER&&window.UAMUSER.r==="admin"}
